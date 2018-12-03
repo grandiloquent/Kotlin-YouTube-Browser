@@ -1,5 +1,7 @@
 "# Kotlin-YouTube-Browser" 
 
+A browser that blocks YouTube channels which you dont want watch.
+
 一個可以屏蔽YouTube頻道的瀏覽器
 
 默認屏蔽

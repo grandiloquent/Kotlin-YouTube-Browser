@@ -1,4 +1,4 @@
-"# Kotlin-YouTube-Browser" 
+# Browser
 
 A browser that blocks YouTube channels which you dont want watch.
 

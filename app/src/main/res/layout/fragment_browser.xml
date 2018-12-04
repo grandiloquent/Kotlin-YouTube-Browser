@@ -13,7 +13,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:scrollbarThumbVertical="@drawable/scrollbar_thumb"/>
-    <euphoria.psycho.browser.FloatingActionsMenu android:id="@+id/multiple_actions_down"
+    <euphoria.psycho.browser.FloatingActionsMenu android:id="@+id/floating_menu"
                                                  android:layout_width="wrap_content"
                                                  android:layout_height="wrap_content"
                                                  android:layout_alignParentRight="true"
@@ -29,6 +29,24 @@
                                                  android:layout_marginBottom="16dp"
                                                  android:layout_marginRight="16dp"
                                                  android:layout_marginEnd="16dp">
+        <euphoria.psycho.browser.FloatingActionButton android:layout_width="wrap_content"
+                                                      android:layout_height="wrap_content"
+                                                      android:src="@drawable/ic_lock_outline_black_24dp"
+                                                      fab:fab_colorNormal="@color/white"
+                                                      fab:fab_size="mini"
+                                                      fab:fab_title="屏蔽中"
+                                                      android:id="@+id/floating_lock"
+                                                      fab:fab_colorPressed="@color/white_pressed"
+        />
+        <euphoria.psycho.browser.FloatingActionButton android:layout_width="wrap_content"
+                                                      android:layout_height="wrap_content"
+                                                      android:src="@drawable/ic_filter_list_black_24dp"
+                                                      fab:fab_colorNormal="@color/white"
+                                                      fab:fab_size="mini"
+                                                      fab:fab_title="屏蔽"
+                                                      android:id="@+id/floating_filter"
+                                                      fab:fab_colorPressed="@color/white_pressed"
+        />
         <euphoria.psycho.browser.FloatingActionButton android:layout_width="wrap_content"
                                                       android:layout_height="wrap_content"
                                                       android:src="@drawable/ic_chevron_left_black_24dp"
@@ -48,7 +66,16 @@
                                                       android:id="@+id/floating_refresh"
                                                       fab:fab_colorPressed="@color/white_pressed"
         />
+        <euphoria.psycho.browser.FloatingActionButton android:layout_width="wrap_content"
+                                                      android:layout_height="wrap_content"
+                                                      android:src="@drawable/ic_home_black_24dp"
+                                                      fab:fab_colorNormal="@color/white"
+                                                      fab:fab_size="mini"
+                                                      fab:fab_title="首页"
 
+                                                      android:id="@+id/floating_home"
+                                                      fab:fab_colorPressed="@color/white_pressed"
+        />
     </euphoria.psycho.browser.FloatingActionsMenu>
 
 </RelativeLayout>

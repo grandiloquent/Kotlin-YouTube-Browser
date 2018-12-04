@@ -1,5 +1,6 @@
 package euphoria.psycho.browser;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ public class BrowserFragment extends Fragment {
     private static final int INITIAL_PROGRESS = 5;
     private static final String KEY_FILTER = "filter";
     private static final String KEY_URI = "uri";
+    private static final String KEY_IS_FILTER = "is_filter";
     private static final String PATTERN_URL = "m.youtube.com";
     private static final String SEARCH_MARK = "/*mark for changed*/";
     private String mCurrentUri = "";
@@ -36,6 +38,7 @@ public class BrowserFragment extends Fragment {
     private Boolean mIsFilter = true;
     private WebView mWebView;
     private ProgressBar mProgressBar;
+    private FloatingActionsMenu mFloating;
 
     private void applyFilter() {
         if (mIsFilter && mCurrentUri.contains(PATTERN_URL)) {
@@ -48,13 +51,61 @@ public class BrowserFragment extends Fragment {
     }
 
     private void setupControls(View view) {
-
+        if (mFloating == null) mFloating = view.findViewById(R.id.floating_menu);
         view.findViewById(R.id.floating_refresh).setOnClickListener(e -> {
             mWebView.reload();
+            mFloating.collapse();
         });
         view.findViewById(R.id.floating_go_back).setOnClickListener(e -> {
             mWebView.goBack();
+            mFloating.collapse();
         });
+        view.findViewById(R.id.floating_home).setOnClickListener(e -> {
+            mCurrentUri = DEFAULT_URI;
+            loadUri();
+            mFloating.collapse();
+        });
+        FloatingActionButton actionButton = view.findViewById(R.id.floating_lock);
+        actionButton.setOnClickListener(e -> {
+
+            if (mIsFilter) {
+                actionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_open_black_24dp));
+                actionButton.setTitle("未屏蔽");
+            } else {
+                actionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_outline_black_24dp));
+                actionButton.setTitle("屏蔽中");
+
+            }
+            mIsFilter = !mIsFilter;
+            mFloating.collapse();
+        });
+        view.findViewById(R.id.floating_filter).setOnClickListener(e -> {
+            final EditText editText = new EditText(getActivity());
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            editText.setText(preferences.getString(KEY_FILTER, DEFAULT_FILTER));
+            new AlertDialog.Builder(getActivity())
+                    .setView(editText)
+                    .setNegativeButton(android.R.string.cancel, ((dialog, which) -> {
+                        dialog.dismiss();
+                    }))
+                    .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
+                        String filter = editText.getText().toString();
+                        preferences.edit().putString(KEY_FILTER, filter).apply();
+                        mFilters = filter;
+                        getFilterSource();
+
+                        dialog.dismiss();
+                    }))
+                    .show();
+            mFloating.collapse();
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString(KEY_URI, mCurrentUri)
+                .putBoolean(KEY_IS_FILTER, mIsFilter).apply();
+        super.onDestroy();
     }
 
     private void getFilterSource() {
@@ -148,6 +199,7 @@ public class BrowserFragment extends Fragment {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mCurrentUri = preferences.getString(KEY_URI, DEFAULT_URI);
         mFilters = preferences.getString(KEY_FILTER, DEFAULT_FILTER);
+        mIsFilter = preferences.getBoolean(KEY_IS_FILTER, true);
         getFilterSource();
     }
 
@@ -164,20 +216,17 @@ public class BrowserFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        View view = getView();
-        if (view != null) {
-            view.setFocusableInTouchMode(true);
-            view.requestFocus();
-            view.setOnKeyListener((v, keyCode, event) -> {
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (mWebView.canGoBack()) {
-                        mWebView.goBack();
-                        return true;
-                    }
+
+        mWebView.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
+                    return true;
                 }
-                return false;
-            });
-        }
+            }
+            return false;
+        });
+
     }
 
 }

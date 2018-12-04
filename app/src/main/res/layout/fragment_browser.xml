@@ -1,74 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_height="match_parent"
-                                                   android:layout_width="match_parent">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="47dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:layout_width="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="47dp"
                   android:id="@+id/linear_bar"
                   android:orientation="horizontal"
-                  app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-                  app:layout_constraintEnd_toEndOf="parent"
                   android:background="@drawable/w_bg_new_night"
     >
         <ImageButton android:layout_gravity="center_vertical"
-                     android:background="@drawable/btn_transparent1" android:layout_width="35.0dip"
-                     android:layout_height="37.0dip" android:layout_marginLeft="5.0dip"
-                     android:layout_marginTop="4.0dip" android:layout_marginRight="20.0dip"
-                     android:layout_marginBottom="4.0dip" android:src="@drawable/home_top_arr"/>
-        <EditText android:textSize="13.0dip" android:textColor="#ff6c6c6c"
-                  android:layout_gravity="center" android:id="@+id/text_url"
-                  android:background="@drawable/a_home_topurl" android:paddingLeft="3.0dip"
-                  android:layout_width="wrap_content" android:layout_height="33.0dip"
-                  android:layout_marginLeft="0.0px" android:layout_marginTop="4.0dip"
-                  android:layout_marginRight="0.0dip" android:layout_marginBottom="4.0dip"
-                  android:inputType="textNoSuggestions" android:drawableLeft="@drawable/ic_earth_br"
-                  android:drawablePadding="5.0dip" android:layout_weight="0.9"
+                     android:background="@drawable/btn_transparent1"
+                     android:layout_width="35.0dip"
+                     android:layout_height="37.0dip"
+                     android:layout_marginLeft="5.0dip"
+                     android:layout_marginTop="4.0dip"
+                     android:layout_marginRight="20.0dip"
+                     android:layout_marginBottom="4.0dip"
+                     android:src="@drawable/home_top_arr"/>
+        <EditText android:textSize="13.0dip"
+                  android:textColor="#ff6c6c6c"
+                  android:layout_gravity="center"
+                  android:id="@+id/text_url"
+                  android:background="@drawable/a_home_topurl"
+                  android:paddingLeft="3.0dip"
+                  android:layout_width="wrap_content"
+                  android:layout_height="33.0dip"
+                  android:layout_marginLeft="0.0px"
+                  android:layout_marginTop="4.0dip"
+                  android:layout_marginRight="0.0dip"
+                  android:layout_marginBottom="4.0dip"
+                  android:inputType="textNoSuggestions"
+                  android:drawableLeft="@drawable/ic_earth_br"
+                  android:drawablePadding="5.0dip"
+                  android:layout_weight="0.9"
         />
-        <ImageButton android:layout_gravity="center_vertical" android:id="@+id/image_go"
-                     android:background="@drawable/btn_transparent1" android:layout_width="37.0dip"
-                     android:layout_height="33.0dip" android:layout_marginTop="4.0dip"
-                     android:layout_marginRight="2.0dip" android:layout_marginBottom="4.0dip"/>
+        <ImageButton android:layout_gravity="center_vertical"
+                     android:id="@+id/image_go"
+                     android:background="@drawable/btn_transparent1"
+                     android:layout_width="37.0dip"
+                     android:layout_height="33.0dip"
+                     android:layout_marginTop="4.0dip"
+                     android:layout_marginRight="2.0dip"
+                     android:layout_marginBottom="4.0dip"/>
 
-        <ImageButton android:layout_gravity="center_vertical" android:id="@+id/image_search"
-                     android:background="@drawable/btn_transparent1" android:layout_width="37.0dip"
-                     android:layout_height="37.0dip" android:layout_marginLeft="20.0dip"
-                     android:layout_marginTop="4.0dip" android:layout_marginRight="4.0dip"
-                     android:layout_marginBottom="4.0dip" android:src="@drawable/icon_search"/>
+        <ImageButton android:layout_gravity="center_vertical"
+                     android:id="@+id/image_search"
+                     android:background="@drawable/btn_transparent1"
+                     android:layout_width="37.0dip"
+                     android:layout_height="37.0dip"
+                     android:layout_marginLeft="20.0dip"
+                     android:layout_marginTop="4.0dip"
+                     android:layout_marginRight="4.0dip"
+                     android:layout_marginBottom="4.0dip"
+                     android:src="@drawable/icon_search"/>
 
     </LinearLayout>
-    <euphoria.psycho.browser.AnimatedProgressBar
-            android:id="@+id/progress"
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:progressDrawable="@drawable/photon_progressbar"
-            app:shiftDuration="@integer/progress_shift_duration"
-            app:wrapShiftDrawable="true"
-            android:importantForAccessibility="yes"
-            tools:progress="50" app:layout_constraintTop_toBottomOf="@+id/linear_bar"/>
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
+
+    <ProgressBar android:id="@+id/progress" android:layout_width="fill_parent" android:layout_height="3.0dip"
+                 android:layout_marginTop="1.0px"
+                 android:progressDrawable="@drawable/myprogress_style1"
+                 style="?android:attr/progressBarStyleHorizontal"/>
+
+    <WebView
+
+            android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="3dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/progress"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    >
+            android:layout_weight="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollbarThumbVertical="@drawable/scrollbar_thumb"/>
 
-        <WebView
-                android:id="@+id/web_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

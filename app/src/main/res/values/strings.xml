@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Browser</string>
-    <string name="content_description_menu">More options</string>
-    <string name="content_description_customtab_exit">Return to previous app</string>
-    <string name="site_security_icon_content_description">Site Security</string>
+
+    <style name="ContentOverlay" parent="@android:style/Theme.Light">
+        <item name="android:windowBackground">@drawable/baicolor</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@drawable/baicolor</item>
+    </style>
 </resources>

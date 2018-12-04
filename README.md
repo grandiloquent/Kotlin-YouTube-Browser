@@ -5,9 +5,11 @@ A browser that blocks YouTube channels which you dont want watch.
 一個可以屏蔽YouTube頻道的瀏覽器
 
 ## 截图
-
+<div style="display:inline">
 <img src="Screenshots/Screenshot_2018-12-04-11-27-54.png" width="300px">
 <img src="Screenshots/Screenshot_2018-12-04-11-28-19.png" width="300px">
+</div>
+
 
 默認屏蔽
 

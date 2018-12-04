@@ -11,17 +11,17 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.webkit.*;
-import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.*;
 import euphoria.psycho.browser.floating.FloatingActionButton;
 import euphoria.psycho.browser.floating.FloatingActionsMenu;
 
 import java.io.*;
+import java.text.Collator;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class BrowserFragment extends Fragment {
 
@@ -85,9 +85,10 @@ public class BrowserFragment extends Fragment {
         });
         view.findViewById(R.id.floating_filter).setOnClickListener(e -> {
             final EditText editText = new EditText(getActivity());
+
             final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             editText.setText(preferences.getString(KEY_FILTER, DEFAULT_FILTER));
-            new AlertDialog.Builder(getActivity())
+            new AlertDialog.Builder(getActivity(), android.R.style.Theme_Holo_Dialog)
                     .setView(editText)
                     .setNegativeButton(android.R.string.cancel, ((dialog, which) -> {
                         dialog.dismiss();
@@ -103,6 +104,33 @@ public class BrowserFragment extends Fragment {
                     .show();
             mFloating.collapse();
         });
+    }
+
+    private static String sortFilters(String value) {
+        Collator collator = Collator.getInstance(Locale.CHINA);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Arrays.stream(value.split("\\|"))
+                    .sorted(collator::compare)
+                    .distinct()
+                    .collect(Collectors.joining("|"));
+
+        } else {
+            List<String> list = new ArrayList<>();
+
+            for (String i : value.split("\\|")) {
+                if (list.indexOf(i) > -1) continue;
+                list.add(i);
+            }
+            Collections.sort(list, collator::compare);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String i : list) {
+                stringBuilder.append(i).append('|');
+            }
+            return stringBuilder.toString();
+        }
+
     }
 
     @Override
@@ -144,6 +172,12 @@ public class BrowserFragment extends Fragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
+        mWebView.setOnLongClickListener(v ->
+        {
+            handleLongClick();
+            return false;
+        });
+
         mWebView.clearCache(false);
         mWebView.setLongClickable(true);
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -185,13 +219,21 @@ public class BrowserFragment extends Fragment {
         if (!cacheDirectory.isDirectory()) {
             cacheDirectory.mkdir();
         }
+        // Cache
+        settings.setAppCacheEnabled(true);
         settings.setAppCachePath(cacheDirectory.getAbsolutePath());
         settings.setAppCacheMaxSize(CACHE_SIZE);
-        settings.setAppCacheEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
+        // Storage & Database
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
+
+        settings.setGeolocationEnabled(true);
         settings.setAllowFileAccess(true);
+
         settings.setJavaScriptEnabled(true);
+
         settings.setSupportZoom(false);
         settings.setDisplayZoomControls(false);
     }
@@ -202,6 +244,30 @@ public class BrowserFragment extends Fragment {
         setupWebView();
         loadUri();
 
+    }
+
+    private void handleLongClick() {
+        WebView.HitTestResult result = mWebView.getHitTestResult();
+        switch (result.getType()) {
+            case WebView.HitTestResult.SRC_ANCHOR_TYPE:
+                showMenu(result.getExtra());
+                break;
+        }
+    }
+
+    private void showMenu(String line) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.menu_link, null);
+
+        ((TextView) view.findViewById(R.id.text_link)).setText(line);
+
+        final PopupWindow popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setTouchable(true);
+        popupWindow.setFocusable(true);
+        view.findViewById(R.id.text_copy_text).setOnClickListener(v -> {
+            Utils.copyText(getActivity(), line);
+            popupWindow.dismiss();
+        });
+        popupWindow.showAtLocation(getView().findViewById(R.id.relative_layout), Gravity.CENTER, 0, 0);
     }
 
     @Override

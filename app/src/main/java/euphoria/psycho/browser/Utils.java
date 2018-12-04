@@ -1,5 +1,9 @@
 package euphoria.psycho.browser;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -22,7 +26,13 @@ public class Utils {
         String line;
         while ((line = reader.readLine()) != null) lines.add(line);
         closeSilently(in);
+
         return lines;
+    }
+
+    public static void copyText(Context context, String text) {
+        ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        manager.setPrimaryClip(ClipData.newPlainText("", text));
     }
 
     public static byte[] readBytes(File file) throws IOException {

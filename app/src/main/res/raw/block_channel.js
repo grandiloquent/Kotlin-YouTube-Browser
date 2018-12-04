@@ -20,9 +20,9 @@
   var _delay=300
   var _filters =
  /*mark for changed*/
-   _timer=setTimeout(hideChannels(_filters), 300);
+   _timer=setTimeout(hideChannels(_filters), _delay/5);
   window.addEventListener(
       "scroll", function() {
      clearTimeout(_timer);
-      _timer=setTimeout(hideChannels(_filters), 300); })
+      _timer=setTimeout(hideChannels(_filters), _delay); })
 })()

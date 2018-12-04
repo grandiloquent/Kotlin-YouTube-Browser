@@ -6,7 +6,7 @@ A browser that blocks YouTube channels which you dont want watch.
 
 ## 截图
 
-<img src="Screenshots/Screenshot_2018-12-04-11-27-54.png" style="width:30%;height:auto;">
+<img src="Screenshots/Screenshot_2018-12-04-11-27-54.png" width="600px">
 
 默認屏蔽
 

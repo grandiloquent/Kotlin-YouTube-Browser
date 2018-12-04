@@ -18,7 +18,7 @@ A browser that blocks YouTube channels which you dont want watch.
     laowhy86
     serpentza
     SETN三立新聞網
-    从台湾看见世界
+    從台灣看見世界的故事
     風傳媒 The Storm Media
     寰宇新聞 頻道
     洛杉矶华人资讯网How视频

@@ -4,8 +4,11 @@ A browser that blocks YouTube channels which you dont want watch.
 
 一個可以屏蔽YouTube頻道的瀏覽器
 
-## 简介
+## 使用方法
 
+复制想要屏蔽的YouTube频道，单击·屏蔽·按钮，输入分隔号`|`,粘贴频道名称，确定即可屏蔽频道。
+
+此项目开源，程序编译后小于100KB，无广告，有兴趣的朋友可自行编译。
 
 ### 默認屏蔽
 
@@ -13,7 +16,7 @@ A browser that blocks YouTube channels which you dont want watch.
 
 ## 下载
 
-[可屏蔽指定频道的YouTube浏览器](https://github.com/grandiloquent/Kotlin-YouTube-Browser/raw/master/release/youtube_browser.apk)
+[YouTube浏览器](https://github.com/grandiloquent/Kotlin-YouTube-Browser/raw/master/release/youtube_browser.apk)
 
 
 ## 截图

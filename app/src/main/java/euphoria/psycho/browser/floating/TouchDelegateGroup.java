@@ -1,4 +1,4 @@
-package euphoria.psycho.browser;
+package euphoria.psycho.browser.floating;
 
 import android.graphics.Rect;
 import android.view.MotionEvent;

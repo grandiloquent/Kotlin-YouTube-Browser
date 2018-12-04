@@ -1,4 +1,4 @@
-package euphoria.psycho.browser;
+package euphoria.psycho.browser.floating;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
+import euphoria.psycho.browser.R;
 
 public class AddFloatingActionButton extends FloatingActionButton {
   int mPlusColor;

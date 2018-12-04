@@ -1,4 +1,4 @@
-package euphoria.psycho.browser;
+package euphoria.psycho.browser.floating;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -23,6 +23,7 @@ import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import euphoria.psycho.browser.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

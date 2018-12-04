@@ -9,7 +9,7 @@
       var element = nodes[index];
       var title =
           element.querySelector('.text-info,.compact-media-item-byline');
-      console.log(element, title);
+      // console.log(element, title);
       if (!title) continue;
       var name = title.innerText;
       // console.log(name,filters.indexOf(name));

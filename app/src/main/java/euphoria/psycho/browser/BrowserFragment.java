@@ -1,5 +1,6 @@
 package euphoria.psycho.browser;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import android.view.ViewGroup;
 import android.webkit.*;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import euphoria.psycho.browser.floating.FloatingActionButton;
+import euphoria.psycho.browser.floating.FloatingActionsMenu;
 
 import java.io.*;
 
@@ -138,24 +142,28 @@ public class BrowserFragment extends Fragment {
         mWebView.loadUrl(mCurrentUri);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         mWebView.clearCache(false);
         mWebView.setLongClickable(true);
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+
+                mProgressBar.setProgress(newProgress);
+            }
+        });
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-//                mProgressBar.setProgress(INITIAL_PROGRESS);
-//                mProgressBar.setVisibility(View.VISIBLE);
+
+                mProgressBar.setVisibility(View.VISIBLE);
+                mProgressBar.setProgress(INITIAL_PROGRESS);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                mWebView.setWebChromeClient(new WebChromeClient() {
-//                    @Override
-//                    public void onProgressChanged(WebView view, int newProgress) {
-//                        mProgressBar.setProgress(newProgress);
-//                    }
-//                });
+
 
                 mWebView.loadUrl(url);
                 return true;
@@ -164,9 +172,11 @@ public class BrowserFragment extends Fragment {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-//                if (mProgressBar.getVisibility() == View.VISIBLE) {
-//                    mProgressBar.setVisibility(View.INVISIBLE);
-//                }
+                if (mProgressBar.getVisibility() == View.VISIBLE) {
+
+
+                    mProgressBar.setVisibility(View.GONE);
+                }
                 applyFilter();
             }
         });
@@ -182,6 +192,8 @@ public class BrowserFragment extends Fragment {
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setJavaScriptEnabled(true);
+        settings.setSupportZoom(false);
+        settings.setDisplayZoomControls(false);
     }
 
     @Override
@@ -208,7 +220,7 @@ public class BrowserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_browser, container, false);
 
         mWebView = view.findViewById(R.id.web_view);
-        //mProgressBar = view.findViewById(R.id.progress);
+        mProgressBar = view.findViewById(R.id.progress);
         setupControls(view);
         return view;
     }

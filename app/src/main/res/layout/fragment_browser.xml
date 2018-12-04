@@ -1,77 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:layout_width="match_parent">
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="47dp"
-                  android:id="@+id/linear_bar"
-                  android:orientation="horizontal"
-                  android:background="@drawable/w_bg_new_night"
-    >
-        <ImageButton android:layout_gravity="center_vertical"
-                     android:background="@drawable/btn_transparent1"
-                     android:layout_width="35.0dip"
-                     android:layout_height="37.0dip"
-                     android:layout_marginLeft="5.0dip"
-                     android:layout_marginTop="4.0dip"
-                     android:layout_marginRight="20.0dip"
-                     android:layout_marginBottom="4.0dip"
-                     android:src="@drawable/home_top_arr"/>
-        <EditText android:textSize="13.0dip"
-                  android:textColor="#ff6c6c6c"
-                  android:layout_gravity="center"
-                  android:id="@+id/text_url"
-                  android:background="@drawable/a_home_topurl"
-                  android:paddingLeft="3.0dip"
-                  android:layout_width="wrap_content"
-                  android:layout_height="33.0dip"
-                  android:layout_marginLeft="0.0px"
-                  android:layout_marginTop="4.0dip"
-                  android:layout_marginRight="0.0dip"
-                  android:layout_marginBottom="4.0dip"
-                  android:inputType="textNoSuggestions"
-                  android:drawableLeft="@drawable/ic_earth_br"
-                  android:drawablePadding="5.0dip"
-                  android:layout_weight="0.9"
-        />
-        <ImageButton android:layout_gravity="center_vertical"
-                     android:id="@+id/image_go"
-                     android:background="@drawable/btn_transparent1"
-                     android:layout_width="37.0dip"
-                     android:layout_height="33.0dip"
-                     android:layout_marginTop="4.0dip"
-                     android:layout_marginRight="2.0dip"
-                     android:layout_marginBottom="4.0dip"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <ImageButton android:layout_gravity="center_vertical"
-                     android:id="@+id/image_search"
-                     android:background="@drawable/btn_transparent1"
-                     android:layout_width="37.0dip"
-                     android:layout_height="37.0dip"
-                     android:layout_marginLeft="20.0dip"
-                     android:layout_marginTop="4.0dip"
-                     android:layout_marginRight="4.0dip"
-                     android:layout_marginBottom="4.0dip"
-                     android:src="@drawable/icon_search"/>
-
-    </LinearLayout>
-
-    <ProgressBar android:id="@+id/progress" android:layout_width="fill_parent" android:layout_height="3.0dip"
-                 android:layout_marginTop="1.0px"
-                 android:progressDrawable="@drawable/myprogress_style1"
-                 style="?android:attr/progressBarStyleHorizontal"/>
 
     <WebView
 
             android:id="@+id/web_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:scrollbarThumbVertical="@drawable/scrollbar_thumb"/>
+    <euphoria.psycho.browser.FloatingActionsMenu android:id="@+id/multiple_actions_down"
+                                                 android:layout_width="wrap_content"
+                                                 android:layout_height="wrap_content"
+                                                 android:layout_alignParentRight="true"
+                                                 android:layout_alignParentEnd="true"
+                                                 android:layout_alignParentBottom="true"
+                                                 fab:fab_addButtonColorNormal="@color/white"
+                                                 fab:fab_addButtonColorPressed="@color/white_pressed"
+                                                 fab:fab_addButtonSize="mini"
+                                                 fab:fab_addButtonPlusIconColor="@color/half_black"
+                                                 fab:fab_expandDirection="up"
 
-</LinearLayout>
+                                                 fab:fab_labelStyle="@style/menu_labels_style"
+                                                 android:layout_marginBottom="16dp"
+                                                 android:layout_marginRight="16dp"
+                                                 android:layout_marginEnd="16dp">
+        <euphoria.psycho.browser.FloatingActionButton android:layout_width="wrap_content"
+                                                      android:layout_height="wrap_content"
+                                                      android:src="@drawable/ic_chevron_left_black_24dp"
+                                                      fab:fab_colorNormal="@color/white"
+                                                      fab:fab_size="mini"
+                                                      fab:fab_title="后退"
+                                                      android:id="@+id/floating_go_back"
+                                                      fab:fab_colorPressed="@color/white_pressed"
+        />
+        <euphoria.psycho.browser.FloatingActionButton android:layout_width="wrap_content"
+                                                      android:layout_height="wrap_content"
+                                                      android:src="@drawable/ic_refresh_black_24dp"
+                                                      fab:fab_colorNormal="@color/white"
+                                                      fab:fab_size="mini"
+                                                      fab:fab_title="刷新"
+
+                                                      android:id="@+id/floating_refresh"
+                                                      fab:fab_colorPressed="@color/white_pressed"
+        />
+
+    </euphoria.psycho.browser.FloatingActionsMenu>
+
+</RelativeLayout>

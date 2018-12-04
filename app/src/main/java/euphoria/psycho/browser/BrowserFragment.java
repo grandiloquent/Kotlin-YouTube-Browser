@@ -35,7 +35,6 @@ public class BrowserFragment extends Fragment {
     private String mFilterSource;
     private Boolean mIsFilter = true;
     private WebView mWebView;
-    private EditText mTextUri;
     private ProgressBar mProgressBar;
 
     private void applyFilter() {
@@ -46,6 +45,16 @@ public class BrowserFragment extends Fragment {
                 });
             }
         }
+    }
+
+    private void setupControls(View view) {
+
+        view.findViewById(R.id.floating_refresh).setOnClickListener(e -> {
+            mWebView.reload();
+        });
+        view.findViewById(R.id.floating_go_back).setOnClickListener(e -> {
+            mWebView.goBack();
+        });
     }
 
     private void getFilterSource() {
@@ -84,18 +93,18 @@ public class BrowserFragment extends Fragment {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                mProgressBar.setProgress(INITIAL_PROGRESS);
-                mProgressBar.setVisibility(View.VISIBLE);
+//                mProgressBar.setProgress(INITIAL_PROGRESS);
+//                mProgressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                mWebView.setWebChromeClient(new WebChromeClient() {
-                    @Override
-                    public void onProgressChanged(WebView view, int newProgress) {
-                        mProgressBar.setProgress(newProgress);
-                    }
-                });
+//                mWebView.setWebChromeClient(new WebChromeClient() {
+//                    @Override
+//                    public void onProgressChanged(WebView view, int newProgress) {
+//                        mProgressBar.setProgress(newProgress);
+//                    }
+//                });
 
                 mWebView.loadUrl(url);
                 return true;
@@ -104,10 +113,9 @@ public class BrowserFragment extends Fragment {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                mTextUri.setText(mCurrentUri);
-                if (mProgressBar.getVisibility() == View.VISIBLE) {
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                }
+//                if (mProgressBar.getVisibility() == View.VISIBLE) {
+//                    mProgressBar.setVisibility(View.INVISIBLE);
+//                }
                 applyFilter();
             }
         });
@@ -148,8 +156,8 @@ public class BrowserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_browser, container, false);
 
         mWebView = view.findViewById(R.id.web_view);
-        mProgressBar = view.findViewById(R.id.progress);
-        mTextUri = view.findViewById(R.id.text_url);
+        //mProgressBar = view.findViewById(R.id.progress);
+        setupControls(view);
         return view;
     }
 

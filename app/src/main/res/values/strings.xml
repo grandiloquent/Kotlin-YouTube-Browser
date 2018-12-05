@@ -1,43 +1,43 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="black_semi_transparent">#B2000000</color>
     <color name="half_black">#808080</color>
     <color name="scrollbarThumb">#b2b2b2b2</color>
     <color name="white">#fafafa</color>
     <color name="white_pressed">#f1f1f1</color>
     <declare-styleable name="AddFloatingActionButton">
-        <attr name="fab_plusIconColor" format="color"/>
+        <attr name="fab_plusIconColor" format="color" />
     </declare-styleable>
     <declare-styleable name="FloatingActionButton">
-        <attr name="fab_colorPressed" format="color"/>
-        <attr name="fab_colorDisabled" format="color"/>
-        <attr name="fab_colorNormal" format="color"/>
-        <attr name="fab_icon" format="reference"/>
+        <attr name="fab_colorPressed" format="color" />
+        <attr name="fab_colorDisabled" format="color" />
+        <attr name="fab_colorNormal" format="color" />
+        <attr name="fab_icon" format="reference" />
         <attr name="fab_size" format="enum">
-            <enum name="normal" value="0"/>
-            <enum name="mini" value="1"/>
+            <enum name="normal" value="0" />
+            <enum name="mini" value="1" />
         </attr>
-        <attr name="fab_title" format="string"/>
-        <attr name="fab_stroke_visible" format="boolean"/>
+        <attr name="fab_title" format="string" />
+        <attr name="fab_stroke_visible" format="boolean" />
     </declare-styleable>
     <declare-styleable name="FloatingActionsMenu">
-        <attr name="fab_addButtonColorPressed" format="color"/>
-        <attr name="fab_addButtonColorNormal" format="color"/>
+        <attr name="fab_addButtonColorPressed" format="color" />
+        <attr name="fab_addButtonColorNormal" format="color" />
         <attr name="fab_addButtonSize" format="enum">
-            <enum name="normal" value="0"/>
-            <enum name="mini" value="1"/>
+            <enum name="normal" value="0" />
+            <enum name="mini" value="1" />
         </attr>
-        <attr name="fab_addButtonPlusIconColor" format="color"/>
-        <attr name="fab_addButtonStrokeVisible" format="boolean"/>
-        <attr name="fab_labelStyle" format="reference"/>
+        <attr name="fab_addButtonPlusIconColor" format="color" />
+        <attr name="fab_addButtonStrokeVisible" format="boolean" />
+        <attr name="fab_labelStyle" format="reference" />
         <attr name="fab_labelsPosition" format="enum">
-            <enum name="left" value="0"/>
-            <enum name="right" value="1"/>
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
         </attr>
         <attr name="fab_expandDirection" format="enum">
-            <enum name="up" value="0"/>
-            <enum name="down" value="1"/>
-            <enum name="left" value="2"/>
-            <enum name="right" value="3"/>
+            <enum name="up" value="0" />
+            <enum name="down" value="1" />
+            <enum name="left" value="2" />
+            <enum name="right" value="3" />
         </attr>
     </declare-styleable>
     <dimen name="fab_actions_spacing">16dp</dimen>
@@ -50,18 +50,56 @@
     <dimen name="fab_size_mini">40dp</dimen>
     <dimen name="fab_size_normal">56dp</dimen>
     <dimen name="fab_stroke_width">1dp</dimen>
-    <item type="drawable" name="baicolor">#ff000000</item>
-    <item name="fab_expand_menu_button" type="id"/>
-    <item name="fab_label" type="id"/>
+    <item name="baicolor" type="drawable">#ff000000</item>
+    <item name="fab_expand_menu_button" type="id" />
+    <item name="fab_label" type="id" />
     <string name="app_name">Browser</string>
+
     <style name="ContentOverlay" parent="@android:style/Theme.Light">
         <item name="android:windowBackground">@drawable/baicolor</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@drawable/baicolor</item>
     </style>
+
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">#333</item>
+    </style>
+
+    <style name="BottomSheet.GridItemImage">
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="Text" />
+
+    <style name="Text.Hint">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">?android:textColorHint</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
+    </style>
+
+    <style name="BottomSheet.GridItemTitle">
+        <item name="android:singleLine">true</item>
+        <item name="android:textAppearance">@style/Text.Hint</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="BottomSheet" />
+
+    <style name="BottomSheet.GridItem">
+        <item name="android:gravity">center_horizontal</item>
+        <!--<item name="android:paddingTop">8dp</item>-->
+        <!--<item name="android:paddingBottom">8dp</item>-->
+    </style>
+
+    <style name="BottomSheet.Icon">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
     </style>
 
 </resources>

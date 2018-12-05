@@ -52,16 +52,19 @@
             fab:fab_size="mini"
             fab:fab_title="菜单" />
 
+
+
+
         <euphoria.psycho.browser.floating.FloatingActionButton
-            android:id="@+id/floating_go_back"
+            android:id="@+id/floating_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_chevron_left_black_24dp"
+            android:src="@drawable/ic_home_black_24dp"
             fab:fab_colorNormal="@color/white"
             fab:fab_colorPressed="@color/white_pressed"
-            fab:fab_size="mini"
-            fab:fab_title="后退" />
 
+            fab:fab_size="mini"
+            fab:fab_title="首页" />
         <euphoria.psycho.browser.floating.FloatingActionButton
             android:id="@+id/floating_refresh"
             android:layout_width="wrap_content"
@@ -74,15 +77,14 @@
             fab:fab_title="刷新" />
 
         <euphoria.psycho.browser.floating.FloatingActionButton
-            android:id="@+id/floating_home"
+            android:id="@+id/floating_go_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_home_black_24dp"
+            android:src="@drawable/ic_chevron_left_black_24dp"
             fab:fab_colorNormal="@color/white"
             fab:fab_colorPressed="@color/white_pressed"
-
             fab:fab_size="mini"
-            fab:fab_title="首页" />
+            fab:fab_title="后退" />
     </euphoria.psycho.browser.floating.FloatingActionsMenu>
 
 

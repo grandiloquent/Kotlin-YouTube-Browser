@@ -43,7 +43,7 @@ A browser that blocks YouTube channels which you dont want watch.
 
 ## 截图
 <div style="display:inline">
-<img src="Screenshots/Screenshot_2018-12-05-22-03-30.png" width="300px">
-<img src="Screenshots/Screenshot_2018-12-05-22-03-40.png" width="300px">
+<img src="Screenshots/Screenshot_2018-12-05-22-06-53.png" width="300px">
+<img src="Screenshots/Screenshot_2018-12-05-22-07-03.png" width="300px">
 </div>
 

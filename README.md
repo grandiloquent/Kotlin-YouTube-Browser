@@ -12,7 +12,7 @@ A browser that blocks YouTube channels which you dont want watch.
 
 ### 默認屏蔽
 
-    54新觀點
+	54新觀點
     ADVChina
     China Uncensored
     laowhy86
@@ -20,7 +20,9 @@ A browser that blocks YouTube channels which you dont want watch.
     SETN三立新聞網
     從台灣看見世界的故事
     風傳媒 The Storm Media
+    福氣旺旺來
     寰宇新聞 頻道
+    历史新知
     洛杉矶华人资讯网How视频
     美国之音中文网
     夢想街之全能事務所
@@ -32,9 +34,12 @@ A browser that blocks YouTube channels which you dont want watch.
     三立LIVE新聞
     台視新聞 TTV NEWS
     头条軍事【军事头条 軍情諜報 軍事解密 每日更新】歡迎訂閱
+    头条历史【史料未及 野史下酒 每日更新 欢迎订阅】
     香港全城討論區
+    新闻今日
     新聞面對面
     新聞追追追
+    中華電視公司
 
 ## 下载
 

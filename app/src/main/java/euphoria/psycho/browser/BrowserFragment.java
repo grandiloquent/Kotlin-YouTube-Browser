@@ -203,7 +203,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-
+                mCurrentUri = url;
                 mWebView.loadUrl(url);
                 return true;
             }
@@ -327,9 +327,15 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
+        super.onPause();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString(KEY_URI, mCurrentUri)
                 .putBoolean(KEY_IS_FILTER, mIsFilter).apply();
+    }
+
+    @Override
+    public void onDestroy() {
+
         super.onDestroy();
     }
 

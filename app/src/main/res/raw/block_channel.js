@@ -17,10 +17,10 @@ function hideChannels(filter) {
 
       if (filters.indexOf(name) > -1) {
 
-        element.outerHTML="";
-      } else {
-        element.setAttribute('h', '');
+        element.style.display="none";
       }
+        element.setAttribute('h', '');
+
   }
 }
 var _timer;

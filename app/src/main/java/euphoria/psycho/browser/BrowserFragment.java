@@ -332,6 +332,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
             List<String> list = Utils.readLines(getActivity(), R.raw.filter);
             if (!Utils.isEmpty(list)) {
                 mFilters = Utils.joining(list, "|");
+                preferences.edit().putString(KEY_FILTER, mFilters).apply();
             }
         }
 

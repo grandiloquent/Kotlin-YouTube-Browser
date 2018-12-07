@@ -16,22 +16,20 @@ import android.view.View;
 import android.view.ViewParent;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Utils {
     public static final String UTF_8 = "UTF-8";
-    private static ThreadLocal<Rect> sThreadLocalRect;
+    private static final int DEFAULT_BUFFER_SIZE = 8 * 1024;
+    private static final int DEFAULT_BLOCK_SIZE = 4096;
+    private static final int MINIMUM_BLOCK_SIZE = 512;
 
-    public static void postInvalidateOnAnimation(View view) {
-        if (Build.VERSION.SDK_INT >= 16) {
-            view.postInvalidateOnAnimation();
-        } else {
-            view.postInvalidate();
-        }
-    }
+    private static ThreadLocal<Rect> sThreadLocalRect;
 
     public static void closeSilently(Closeable closeable) {
         try {
@@ -114,6 +112,19 @@ public class Utils {
         // TypedValue.complexToDimensionPixelSize
     }
 
+    private static Rect getEmptyTempRect() {
+        if (sThreadLocalRect == null) {
+            sThreadLocalRect = new ThreadLocal<>();
+        }
+        Rect rect = sThreadLocalRect.get();
+        if (rect == null) {
+            rect = new Rect();
+            sThreadLocalRect.set(rect);
+        }
+        rect.setEmpty();
+        return rect;
+    }
+
 //    public static void launchIntent(Context context, Intent intent, List<ResolveInfo> handlers) {
 //        if (handlers == null || handlers.size() == 0) {
 //            openFallbackBrowserActionsMenu(context, intent);
@@ -137,19 +148,6 @@ public class Utils {
 //        }
 //        context.startActivity(intent, null);
 //    }
-
-    private static Rect getEmptyTempRect() {
-        if (sThreadLocalRect == null) {
-            sThreadLocalRect = new ThreadLocal<>();
-        }
-        Rect rect = sThreadLocalRect.get();
-        if (rect == null) {
-            rect = new Rect();
-            sThreadLocalRect.set(rect);
-        }
-        rect.setEmpty();
-        return rect;
-    }
 
     public static void offsetLeftAndRight(View view, int offset) {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -218,6 +216,14 @@ public class Utils {
         }
     }
 
+    public static void postInvalidateOnAnimation(View view) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            view.postInvalidateOnAnimation();
+        } else {
+            view.postInvalidate();
+        }
+    }
+
     public static byte[] readBytes(File file) throws IOException {
         InputStream in = new FileInputStream(file);
         int offset = 0;
@@ -272,5 +278,65 @@ public class Utils {
         final float y = view.getTranslationY();
         view.setTranslationY(y + 1);
         view.setTranslationY(y);
+    }
+
+    public static long copyTo(InputStream in, OutputStream out) throws IOException {
+        long bytesCopied = 0L;
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        int bytes = in.read(buffer);
+        while (bytes >= 0) {
+            out.write(buffer, 0, bytes);
+            bytesCopied += bytes;
+            bytes = in.read(buffer);
+        }
+        return bytesCopied;
+    }
+
+    public static boolean isNullOrBlank(String str) {
+        if (str == null || str.length() == 0) return true;
+        char[] array = str.toCharArray();
+        for (int i = 0; i < array.length; i++) {
+            if (!Character.isWhitespace(array[i])) return false;
+        }
+        return true;
+    }
+
+    public static <T> boolean isEmpty(List<T> list) {
+        return list == null || list.size() == 0;
+    }
+
+    public static String joining(List<String> list, String delimiter) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return list.stream().collect(Collectors.joining(delimiter));
+        } else {
+            StringBuilder stringBuilder = new StringBuilder();
+            int length = list.size();
+            for (int i = 0; i < length; i++) {
+
+                stringBuilder.append(list.get(i));
+                if (i + 1 < length)
+                    stringBuilder.append(delimiter);
+            }
+            return stringBuilder.toString();
+        }
+    }
+
+    public static List<String> readLines(Context context, int resId) {
+        InputStream is = context.getResources().openRawResource(resId);
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, UTF_8));
+            String line;
+            List<String> result = new ArrayList<>();
+
+            while ((line = reader.readLine()) != null) {
+                result.add(line);
+            }
+            closeSilently(is);
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

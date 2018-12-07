@@ -13,7 +13,11 @@
       if (!title) continue;
       var name = title.innerText;
       // console.log(name,filters.indexOf(name));
-      if (filters.indexOf(name) > -1) element.style.display = "none";
+      if (!element.hasAttribute('f') && filters.indexOf(name) > -1){
+      element.remove();
+      }else{
+      element.setAttribute('f','');
+      }
     }
   }
   var _timer;

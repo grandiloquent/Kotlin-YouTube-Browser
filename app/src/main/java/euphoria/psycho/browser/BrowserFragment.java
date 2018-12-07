@@ -23,14 +23,12 @@ import java.io.*;
 import java.lang.ref.WeakReference;
 import java.text.Collator;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class BrowserFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private static final int CACHE_SIZE = 1024 * 1024 * 8;
-    private static final String DEFAULT_FILTER = "54新觀點|ADVChina|China Uncensored|laowhy86|serpentza|SETN三立新聞網|從台灣看見世界的故事|風傳媒 The Storm Media|福氣旺旺來|寰宇新聞 頻道|历史新知|洛杉矶华人资讯网How视频|美国之音中文网|夢想街之全能事務所|民視新聞|民視綜合頻道|明鏡火拍|年代向錢看|三立iNEWS|三立LIVE新聞|台視新聞 TTV NEWS|头条軍事【军事头条 軍情諜報 軍事解密 每日更新】歡迎訂閱|头条历史【史料未及 野史下酒 每日更新 欢迎订阅】|香港全城討論區|新闻今日|新聞面對面|新聞追追追|中華電視公司";
-
-
     private static final String DEFAULT_URI = "https://m.youtube.com";
     private static final int INITIAL_PROGRESS = 5;
     private static final String KEY_FILTER = "filter";
@@ -38,6 +36,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
     private static final String KEY_IS_FILTER = "is_filter";
     private static final String PATTERN_URL = "m.youtube.com";
     private static final String SEARCH_MARK = "/*mark for changed*/";
+    private String DEFAULT_FILTER;
     private String mCurrentUri = "";
     private String mFilters;
     private String mFilterSource;
@@ -96,7 +95,31 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
         mWebView.loadUrl(mCurrentUri);
     }
 
+    // setting filters
+    private void setFilter() {
+        final EditText editText = new EditText(getActivity());
 
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editText.setText(preferences.getString(KEY_FILTER, DEFAULT_FILTER));
+        new AlertDialog.Builder(getActivity(), android.R.style.Theme_Holo_Dialog)
+                .setView(editText)
+                .setNegativeButton(android.R.string.cancel, ((dialog, which) -> {
+                    dialog.dismiss();
+                }))
+                .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
+                    String filter = editText.getText().toString();
+                    filter = sortFilters(filter);
+                    preferences.edit().putString(KEY_FILTER, filter).apply();
+                    mFilters = filter;
+                    getFilterSource();
+
+                    dialog.dismiss();
+                }))
+                .show();
+
+    }
+
+    // setting event handlers
     private void setupControls(View view) {
         if (mFloating == null) mFloating = view.findViewById(R.id.floating_menu);
         view.findViewById(R.id.floating_refresh).setOnClickListener(e -> {
@@ -159,10 +182,6 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
         });
 
 
-    }
-
-    private void toggleFilter() {
-        mIsFilter = !mIsFilter;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -232,28 +251,6 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
         settings.setDisplayZoomControls(false);
     }
 
-    private void setFilter() {
-        final EditText editText = new EditText(getActivity());
-
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        editText.setText(preferences.getString(KEY_FILTER, DEFAULT_FILTER));
-        new AlertDialog.Builder(getActivity(), android.R.style.Theme_Holo_Dialog)
-                .setView(editText)
-                .setNegativeButton(android.R.string.cancel, ((dialog, which) -> {
-                    dialog.dismiss();
-                }))
-                .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
-                    String filter = editText.getText().toString();
-                    preferences.edit().putString(KEY_FILTER, filter).apply();
-                    mFilters = filter;
-                    getFilterSource();
-
-                    dialog.dismiss();
-                }))
-                .show();
-
-    }
-
     private void showMenu(String line) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.menu_link, null);
 
@@ -267,6 +264,10 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
             popupWindow.dismiss();
         });
         popupWindow.showAtLocation(getView().findViewById(R.id.relative_layout), Gravity.CENTER, 0, 0);
+    }
+
+    private void toggleFilter() {
+        mIsFilter = !mIsFilter;
     }
 
     private static String sortFilters(String value) {
@@ -291,6 +292,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
             for (String i : list) {
                 stringBuilder.append(i).append('|');
             }
+            stringBuilder.replace(stringBuilder.length() - 1, stringBuilder.length(), "");
             return stringBuilder.toString();
         }
 
@@ -309,9 +311,19 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mCurrentUri = preferences.getString(KEY_URI, DEFAULT_URI);
         mFilters = preferences.getString(KEY_FILTER, DEFAULT_FILTER);
+
+        if (Utils.isNullOrBlank(mFilters)) {
+            List<String> list = Utils.readLines(getActivity(), R.raw.filter);
+            if (!Utils.isEmpty(list)) {
+                mFilters = Utils.joining(list, "|");
+            }
+        }
+
         mIsFilter = preferences.getBoolean(KEY_IS_FILTER, true);
         getFilterSource();
     }
@@ -324,13 +336,6 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
         mProgressBar = view.findViewById(R.id.progress);
         setupControls(view);
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString(KEY_URI, mCurrentUri)
-                .putBoolean(KEY_IS_FILTER, mIsFilter).apply();
     }
 
     @Override
@@ -370,6 +375,13 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
         if (mBottomSheet.get() != null) {
             mBottomSheet.get().dismiss();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString(KEY_URI, mCurrentUri)
+                .putBoolean(KEY_IS_FILTER, mIsFilter).apply();
     }
 
     @Override

@@ -122,7 +122,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
 
     }
 
-    // setting event handlers
+    // event handlers
     private void setupControls(View view) {
         if (mFloating == null) mFloating = view.findViewById(R.id.floating_menu);
         view.findViewById(R.id.floating_refresh).setOnClickListener(e -> {
@@ -233,7 +233,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-                mCurrentUri = url;
+
                 mWebView.loadUrl(url);
                 return true;
             }
@@ -356,6 +356,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
         super.onDestroy();
     }
 
+    // bottom toolbar
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -372,13 +373,13 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
 
                 break;
             case 2:
-                Utils.copyText(getActivity(), mCurrentUri);
+                Utils.copyText(getActivity(),mWebView.getUrl());
                 Toast.makeText(getActivity(), "成功复制链接到剪切板", Toast.LENGTH_LONG).show();
                 break;
             case 3:
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, mCurrentUri);
+                intent.putExtra(Intent.EXTRA_TEXT, mWebView.getUrl());
                 getActivity().startActivity(Intent.createChooser(intent, ""));
                 break;
             default:

@@ -2,7 +2,8 @@
 
 A browser that blocks YouTube channels which you dont want watch.
 
-一個可以屏蔽YouTube頻道的瀏覽器
+一個可以屏蔽YouTube頻道的瀏覽器.
+
 
 ## 使用方法
 

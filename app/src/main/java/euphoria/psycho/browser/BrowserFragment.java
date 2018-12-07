@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.*;
 import android.webkit.*;
 import android.widget.*;
@@ -27,6 +28,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class BrowserFragment extends Fragment implements AdapterView.OnItemClickListener {
+
+    private static final String TAG = "/Browser";
 
     private static final int CACHE_SIZE = 1024 * 1024 * 8;
     private static final String DEFAULT_URI = "https://m.youtube.com";
@@ -200,6 +203,14 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
 
                 mProgressBar.setProgress(newProgress);
             }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                Log.e(TAG, consoleMessage.message());
+
+                return super.onConsoleMessage(consoleMessage);
+
+            }
         });
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -311,7 +322,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        
+
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mCurrentUri = preferences.getString(KEY_URI, DEFAULT_URI);

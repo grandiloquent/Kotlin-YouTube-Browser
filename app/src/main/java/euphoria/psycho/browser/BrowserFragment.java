@@ -12,20 +12,38 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.*;
-import android.webkit.*;
-import android.widget.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import euphoria.psycho.browser.floating.FloatingActionButton;
-import euphoria.psycho.browser.floating.FloatingActionsMenu;
-import euphoria.psycho.common.Utils;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.text.Collator;
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
+
+import euphoria.psycho.browser.floating.FloatingActionsMenu;
+import euphoria.psycho.common.Utils;
 
 public class BrowserFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -53,7 +71,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
         if (mIsFilter && mCurrentUri.contains(PATTERN_URL)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 mWebView.evaluateJavascript(mFilterSource, it -> {
-
+                    Log.e("TAG/", it);
                 });
             }
         }
@@ -71,7 +89,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
             } else {
                 for (String line; (line = reader.readLine()) != null; ) {
                     if (line.trim().startsWith(SEARCH_MARK)) {
-                        stringBuilder.append(SEARCH_MARK).append('"').append(mFilters).append("\";\n");
+                        stringBuilder.append(SEARCH_MARK).append('"').append(mFilters.replaceAll("\n","")).append("\";\n");
                     } else {
                         stringBuilder.append(line).append('\n');
                     }
@@ -110,7 +128,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
                     dialog.dismiss();
                 }))
                 .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
-                    String filter = editText.getText().toString();
+                    String filter = editText.getText().toString().trim();
                     filter = sortFilters(filter);
                     preferences.edit().putString(KEY_FILTER, filter).apply();
                     mFilters = filter;
@@ -142,10 +160,10 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
             BottomSheet.Item item3 = new BottomSheet.Item();
 
             if (mIsFilter) {
-                item3.title = "开启屏蔽";
+                item3.title = "关闭屏蔽";
                 item3.imageResId = R.drawable.ic_lock_outline_black_24dp;
             } else {
-                item3.title = "关闭屏蔽";
+                item3.title = "开启屏蔽";
                 item3.imageResId = R.drawable.ic_lock_open_black_24dp;
             }
             items.add(item3);
@@ -294,6 +312,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
             List<String> list = new ArrayList<>();
 
             for (String i : value.split("\\|")) {
+                i=i.trim();
                 if (list.indexOf(i) > -1) continue;
                 list.add(i);
             }
@@ -373,7 +392,7 @@ public class BrowserFragment extends Fragment implements AdapterView.OnItemClick
 
                 break;
             case 2:
-                Utils.copyText(getActivity(),mWebView.getUrl());
+                Utils.copyText(getActivity(), mWebView.getUrl());
                 Toast.makeText(getActivity(), "成功复制链接到剪切板", Toast.LENGTH_LONG).show();
                 break;
             case 3:
